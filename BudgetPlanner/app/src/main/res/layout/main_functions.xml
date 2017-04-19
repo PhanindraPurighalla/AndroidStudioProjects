@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:gravity="center_horizontal">
+
+    <!--  Overview screen with required functions -->
+
+    <!--  Button to view all transaction types -->
+    <Button android:id="@+id/btnViewTypes"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="View Transaction Types"
+        android:layout_marginTop="25dip"/>
+
+    <!--  Button to create a new transaction type -->
+    <Button android:id="@+id/btnCreateType"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Add New Transaction Type"
+        android:layout_marginTop="25dip"/>
+
+    <!--  Button to manage user profile -->
+    <Button android:id="@+id/btnManageUserProfile"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Manage User Profile"
+        android:layout_marginTop="25dip"/>
+
+</LinearLayout>

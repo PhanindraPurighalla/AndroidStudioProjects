@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.budgetplanner.phanindra.budgetplanner">
+
+    <!-- Internet Permissions -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <!-- To auto-complete the email text field in the login form with the user's emails -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.READ_PROFILE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".BudgetPlannerActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.Dark">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".MainFunctionsActivity" android:theme="@style/AppTheme.Dark" />
+        <activity android:name=".SignupActivity" android:theme="@style/AppTheme.Dark" />
+
+        <!-- All Transaction Type Activity -->
+        <activity
+            android:name=".AllTypesActivity"
+            android:label="All Transaction Types"
+            android:theme="@style/AppTheme.Dark" />
+
+        <!-- Add Transaction Type Activity -->
+        <activity
+            android:name=".NewTypeActivity"
+            android:label="Add New Transaction Type"
+            android:theme="@style/AppTheme.Dark" />
+
+        <!-- Edit Transaction Type Activity -->
+        <activity
+            android:name=".EditTypeActivity"
+            android:label="Edit Transaction Type"
+            android:theme="@style/AppTheme.Dark" />
+
+        <!-- Add Financial Record Activity -->
+        <activity
+            android:name=".AddFinancialRecordActivity"
+            android:label="Add Financial Record"
+            android:theme="@style/AppTheme.Dark" />
+
+        <!-- Edit User profile Activity -->
+        <activity
+            android:name=".ManageUserProfileActivity"
+            android:label="Edit User"
+            android:theme="@style/AppTheme.Dark" />
+
+    </application>
+
+</manifest>
