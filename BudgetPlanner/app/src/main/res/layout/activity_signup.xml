@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:fitsSystemWindows="true">
@@ -64,18 +65,13 @@
                 android:inputType="textPassword" />
         </android.support.design.widget.TextInputLayout>
 
-        <!-- Text Label -->
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:layout_marginTop="10dip"
-            android:text="Profession:" />
-
-        <Spinner
+        <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
             android:id="@+id/professionspinner"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Profession"
+            android:textColorHint="#05ab9a"
+            app:met_floatingLabel="normal" />
 
         <!-- Signup Button -->
         <android.support.v7.widget.AppCompatButton

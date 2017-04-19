@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -14,6 +16,8 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -27,12 +31,13 @@ import java.util.List;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class SignupActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class SignupActivity extends AppCompatActivity  {
     private static final String TAG = "SignupActivity";
 
     @InjectView(R.id.input_name) EditText _nameText;
     @InjectView(R.id.input_email) EditText _emailText;
     @InjectView(R.id.input_password) EditText _passwordText;
+    @InjectView(R.id.professionspinner) EditText _professionSpinner;
     @InjectView(R.id.btn_signup) Button _signupButton;
     @InjectView(R.id.link_login) TextView _loginLink;
 
@@ -51,13 +56,39 @@ public class SignupActivity extends AppCompatActivity implements AdapterView.OnI
         ButterKnife.inject(this);
 
         ArrayList<String> professions =getProfessions();
-        Spinner professionSpinner=(Spinner)findViewById(R.id.professionspinner);
+
+        /*Spinner professionSpinner=(Spinner)findViewById(R.id.professionspinner);
         professionSpinner.setOnItemSelectedListener(this);
 
         ArrayAdapter<String> professionAdapter=new ArrayAdapter<String>(this,
                 R.layout.spinner_item,R.id.txt,professions);
         professionAdapter.setDropDownViewResource(R.layout.spinner_item);
         professionSpinner.setAdapter(professionAdapter);
+        */
+
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_dropdown_item_1line, professions);
+        final MaterialBetterSpinner materialDesignSpinner = (MaterialBetterSpinner)
+                findViewById(R.id.professionspinner);
+        materialDesignSpinner.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // Showing selected spinner item
+                Toast.makeText(getBaseContext(), "Profession selected: " + materialDesignSpinner.getText(), Toast.LENGTH_LONG).show();
+
+            }
+        } );
+        materialDesignSpinner.setAdapter(arrayAdapter);
 
         _signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -142,6 +173,7 @@ public class SignupActivity extends AppCompatActivity implements AdapterView.OnI
         String name = _nameText.getText().toString();
         String email = _emailText.getText().toString();
         String password = _passwordText.getText().toString();
+        String profession = _professionSpinner.getText().toString();
 
         if (name.isEmpty() || name.length() < 3) {
             _nameText.setError("at least 3 characters");
@@ -167,25 +199,6 @@ public class SignupActivity extends AppCompatActivity implements AdapterView.OnI
         return valid;
     }
 
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        switch (parent.getId()) {
-            case R.id.professionspinner:
-                // On selecting a spinner item
-                String item = parent.getItemAtPosition(position).toString();
-
-                // Showing selected spinner item
-                Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
-                break;
-
-        }
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-        // TODO Implement later if required
-    }
-
     /**
      * Background Async Task to Signup a new user to the BudgetPlanner application by making HTTP Request
      * */
@@ -194,6 +207,7 @@ public class SignupActivity extends AppCompatActivity implements AdapterView.OnI
         String name = _nameText.getText().toString();
         String email = _emailText.getText().toString();
         String password = _passwordText.getText().toString();
+        String profession = _professionSpinner.getText().toString();
         final ProgressDialog progressDialog = new ProgressDialog(SignupActivity.this,
                 R.style.AppTheme_Dark);
 
@@ -218,6 +232,7 @@ public class SignupActivity extends AppCompatActivity implements AdapterView.OnI
             params.add(new BasicNameValuePair("username", name));
             params.add(new BasicNameValuePair("email_id", email));
             params.add(new BasicNameValuePair("password", password));
+            params.add(new BasicNameValuePair("profession", profession));
 
             // getting JSON string from URL
             JSONObject json = jParser.makeHttpRequest(url_signup, "POST", params);
