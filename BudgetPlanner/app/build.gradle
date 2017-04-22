@@ -17,6 +17,9 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+        debug {
+            debuggable true
+        }
     }
 }
 
@@ -31,7 +34,16 @@ dependencies {
     compile 'com.android.support:design:25.3.1'
     compile 'org.apache.httpcomponents:httpclient:4.5.1'
     testCompile 'junit:junit:4.12'
+
+    // For data bound controls
     compile 'com.jakewharton:butterknife:6.1.0'
+
+    // For HTTP actions
     compile 'com.squareup.okhttp:okhttp:2.5.0'
+
+    // For drop-down list
     compile 'com.weiwangcn.betterspinner:library-material:1.1.0'
+
+    // For date picker
+    compile 'com.wdullaer:materialdatetimepicker:3.1.3'
 }

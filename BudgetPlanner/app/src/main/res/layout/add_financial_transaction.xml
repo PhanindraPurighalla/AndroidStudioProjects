@@ -106,39 +106,35 @@
                     />
             </RadioGroup>
 
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentStart="true">
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp">
 
                 <EditText
-                    android:id="@+id/dob_datetime_text"
-                    android:layout_width="158dp"
+                    android:id="@+id/trans_datetime_text"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Date of birth"
+                    android:hint="Enter transaction date/time"
                     android:inputType="datetime" />
 
                 <Button
-                    android:id="@+id/btn_dob_date"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/btn_date"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/dob_datetime_text"
-                    android:text="Date" />
+                    android:layout_below="@+id/trans_datetime_text"
+                    android:text="Transaction Date" />
 
                 <Button
-                    android:id="@+id/btn_dob_time"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/btn_time"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/btn_dob_date"
-                    android:text="Time" />
+                    android:layout_below="@id/btn_date"
+                    android:text="Transaction Time" />
 
             </android.support.design.widget.TextInputLayout>
+
         </RelativeLayout>
 
         <!-- Signup Button -->

@@ -21,6 +21,16 @@
         android:text="Add New Transaction Type"
         android:layout_marginTop="25dip"/>
 
+    <!--  Button to create a new financial transaction -->
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/btn_add_transaction"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="24dp"
+        android:padding="12dp"
+        android:text="Add Financial Transaction"/>
+
     <!--  Button to manage user profile -->
     <Button android:id="@+id/btnManageUserProfile"
         android:layout_width="fill_parent"

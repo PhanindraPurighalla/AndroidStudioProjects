@@ -1,9 +1,7 @@
 package com.budgetplanner.phanindra.budgetplanner;
 
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -11,18 +9,14 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
-import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
 import org.apache.http.NameValuePair;
@@ -32,28 +26,18 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class SignupActivity extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener,
-        DatePickerDialog.OnDateSetListener {
+public class AddFinancialTransactionActivity extends AppCompatActivity  {
     private String gender = "Male";
-    private String datePart = "01-Jan-1970";
-    private String timePart = "00:00:00";
-
-    private View btnPickDate;
-    private View btnPickTime;
-    private TextView textView;
-
     @InjectView(R.id.input_name) EditText _nameText;
     @InjectView(R.id.input_email) EditText _emailText;
     @InjectView(R.id.input_password) EditText _passwordText;
     @InjectView(R.id.professionspinner) EditText _professionSpinner;
     @InjectView(R.id.gender_radio_group) RadioGroup _genderRadioGroup;
-    @InjectView(R.id.dob_datetime_text) EditText _dateOfBirth;
     @InjectView(R.id.btn_signup) Button _signupButton;
     @InjectView(R.id.link_login) TextView _loginLink;
 
@@ -103,52 +87,6 @@ public class SignupActivity extends AppCompatActivity implements TimePickerDialo
                 RadioButton rb = (RadioButton) findViewById(checkedId);
                 gender = rb.getText().toString();
                 Toast.makeText(getBaseContext(), "Gender selected: " + gender, Toast.LENGTH_LONG).show();
-            }
-        });
-
-        textView = (TextView) findViewById(R.id.dob_datetime_text);
-        btnPickDate = findViewById(R.id.btn_dob_date);
-        btnPickTime = findViewById(R.id.btn_dob_time);
-
-        btnPickDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Calendar now = Calendar.getInstance();
-                DatePickerDialog datepickerdialog = DatePickerDialog.newInstance(
-                        SignupActivity.this,
-                        now.get(Calendar.YEAR),
-                        now.get(Calendar.MONTH),
-                        now.get(Calendar.DAY_OF_MONTH)
-                );
-                datepickerdialog.setThemeDark(true); //set dark them for dialog?
-                datepickerdialog.vibrate(true); //vibrate on choosing date?
-                datepickerdialog.dismissOnPause(true); //dismiss dialog when onPause() called?
-                datepickerdialog.showYearPickerFirst(false); //choose year first?
-                datepickerdialog.setAccentColor(Color.parseColor("#9C27A0")); // custom accent color
-                datepickerdialog.setTitle("Please select a date"); //dialog title
-                datepickerdialog.show(getFragmentManager(), "Datepickerdialog"); //show dialog
-            }
-        });
-
-        btnPickTime.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Calendar now = Calendar.getInstance();
-                TimePickerDialog timepickerdialog = TimePickerDialog.newInstance(SignupActivity.this,
-                        now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE), true);
-                timepickerdialog.setThemeDark(true); //Dark Theme?
-                timepickerdialog.vibrate(true); //vibrate on choosing time?
-                timepickerdialog.dismissOnPause(false); //dismiss the dialog onPause() called?
-                timepickerdialog.enableSeconds(true); //show seconds?
-
-                //Handling cancel event
-                timepickerdialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-                    @Override
-                    public void onCancel(DialogInterface dialogInterface) {
-                        Toast.makeText(SignupActivity.this, "Cancel choosing time", Toast.LENGTH_SHORT).show();
-                    }
-                });
-                timepickerdialog.show(getFragmentManager(), "Timepickerdialog"); //show time picker dialog
             }
         });
 
@@ -260,21 +198,6 @@ public class SignupActivity extends AppCompatActivity implements TimePickerDialo
         return valid;
     }
 
-    @Override
-    public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
-        datePart = dayOfMonth + "-" + (++monthOfYear) + "-" + year;
-        textView.setText(datePart + " " + timePart);
-    }
-
-    @Override
-    public void onTimeSet(TimePickerDialog view, int hourOfDay, int minute, int second) {
-        String hourString = hourOfDay < 10 ? "0" + hourOfDay : "" + hourOfDay;
-        String minuteString = minute < 10 ? "0" + minute : "" + minute;
-        String secondString = second < 10 ? "0" + second : "" + second;
-        timePart = hourString + ":" + minuteString + ":" + secondString;
-        textView.setText(datePart + " " + timePart);
-    }
-
     /**
      * Background Async Task to Signup a new user to the BudgetPlanner application by making HTTP Request
      * */
@@ -284,9 +207,8 @@ public class SignupActivity extends AppCompatActivity implements TimePickerDialo
         String email = _emailText.getText().toString();
         String password = _passwordText.getText().toString();
         String profession = _professionSpinner.getText().toString();
-        String dob = _dateOfBirth.getText().toString();
 
-        final ProgressDialog progressDialog = new ProgressDialog(SignupActivity.this,
+        final ProgressDialog progressDialog = new ProgressDialog(AddFinancialTransactionActivity.this,
                 R.style.AppTheme_Dark);
 
         /**
@@ -312,7 +234,6 @@ public class SignupActivity extends AppCompatActivity implements TimePickerDialo
             params.add(new BasicNameValuePair("password", password));
             params.add(new BasicNameValuePair("profession", profession));
             params.add(new BasicNameValuePair("gender", gender));
-            params.add(new BasicNameValuePair("date_of_birth", dob));
 
             // getting JSON string from URL
             JSONObject json = jParser.makeHttpRequest(url_signup, "POST", params);

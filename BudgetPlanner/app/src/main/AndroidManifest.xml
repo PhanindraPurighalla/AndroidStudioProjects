@@ -51,7 +51,7 @@
 
         <!-- Add Financial Record Activity -->
         <activity
-            android:name=".AddFinancialRecordActivity"
+            android:name=".AddFinancialTransactionActivity"
             android:label="Add Financial Record"
             android:theme="@style/AppTheme.Dark" />
 
