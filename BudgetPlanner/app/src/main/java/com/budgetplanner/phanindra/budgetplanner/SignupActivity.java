@@ -13,6 +13,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,12 +34,12 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 public class SignupActivity extends AppCompatActivity  {
-    private static final String TAG = "SignupActivity";
-
+    private String gender = "Male";
     @InjectView(R.id.input_name) EditText _nameText;
     @InjectView(R.id.input_email) EditText _emailText;
     @InjectView(R.id.input_password) EditText _passwordText;
     @InjectView(R.id.professionspinner) EditText _professionSpinner;
+    @InjectView(R.id.gender_radio_group) RadioGroup _genderRadioGroup;
     @InjectView(R.id.btn_signup) Button _signupButton;
     @InjectView(R.id.link_login) TextView _loginLink;
 
@@ -56,15 +58,6 @@ public class SignupActivity extends AppCompatActivity  {
         ButterKnife.inject(this);
 
         ArrayList<String> professions =getProfessions();
-
-        /*Spinner professionSpinner=(Spinner)findViewById(R.id.professionspinner);
-        professionSpinner.setOnItemSelectedListener(this);
-
-        ArrayAdapter<String> professionAdapter=new ArrayAdapter<String>(this,
-                R.layout.spinner_item,R.id.txt,professions);
-        professionAdapter.setDropDownViewResource(R.layout.spinner_item);
-        professionSpinner.setAdapter(professionAdapter);
-        */
 
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_dropdown_item_1line, professions);
@@ -89,6 +82,15 @@ public class SignupActivity extends AppCompatActivity  {
             }
         } );
         materialDesignSpinner.setAdapter(arrayAdapter);
+
+        _genderRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                // checkedId is the RadioButton selected
+                RadioButton rb = (RadioButton) findViewById(checkedId);
+                gender = rb.getText().toString();
+                Toast.makeText(getBaseContext(), "Gender selected: " + gender, Toast.LENGTH_LONG).show();
+            }
+        });
 
         _signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -173,7 +175,6 @@ public class SignupActivity extends AppCompatActivity  {
         String name = _nameText.getText().toString();
         String email = _emailText.getText().toString();
         String password = _passwordText.getText().toString();
-        String profession = _professionSpinner.getText().toString();
 
         if (name.isEmpty() || name.length() < 3) {
             _nameText.setError("at least 3 characters");
@@ -208,6 +209,7 @@ public class SignupActivity extends AppCompatActivity  {
         String email = _emailText.getText().toString();
         String password = _passwordText.getText().toString();
         String profession = _professionSpinner.getText().toString();
+
         final ProgressDialog progressDialog = new ProgressDialog(SignupActivity.this,
                 R.style.AppTheme_Dark);
 
@@ -233,6 +235,7 @@ public class SignupActivity extends AppCompatActivity  {
             params.add(new BasicNameValuePair("email_id", email));
             params.add(new BasicNameValuePair("password", password));
             params.add(new BasicNameValuePair("profession", profession));
+            params.add(new BasicNameValuePair("gender", gender));
 
             // getting JSON string from URL
             JSONObject json = jParser.makeHttpRequest(url_signup, "POST", params);

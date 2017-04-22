@@ -65,6 +65,7 @@
                 android:inputType="textPassword" />
         </android.support.design.widget.TextInputLayout>
 
+        <!-- Profession label -->
         <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
             android:id="@+id/professionspinner"
             android:layout_width="match_parent"
@@ -72,6 +73,46 @@
             android:hint="Profession"
             android:textColorHint="#05ab9a"
             app:met_floatingLabel="normal" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="20dp">
+            <TextView
+                android:id="@+id/gender_textview"
+                android:paddingRight="15dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Gender"
+                android:textSize="20dp" />
+            <RadioGroup
+                android:id="@+id/gender_radio_group"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/gender_textview"
+                android:orientation="horizontal"
+                >
+                <RadioButton
+                    android:id="@+id/male_radio_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Male"
+                    android:checked="true"
+                    />
+                <RadioButton
+                    android:id="@+id/female_radio_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text = "Female"
+                    />
+                <RadioButton
+                    android:id="@+id/unspecified_radio_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text = "Unspecified"
+                    />
+            </RadioGroup>
+        </RelativeLayout>
 
         <!-- Signup Button -->
         <android.support.v7.widget.AppCompatButton
