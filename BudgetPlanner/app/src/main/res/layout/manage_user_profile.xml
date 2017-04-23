@@ -1,60 +1,142 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView  xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <!-- Username Label -->
-    <TextView android:layout_width="fill_parent"
+    <!--  Name Label -->
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Username"
-        android:paddingLeft="10dip"
-        android:paddingRight="10dip"
-        android:paddingTop="10dip"
-        android:textSize="17dip"/>
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp">
 
-    <!-- Input Username -->
-    <EditText android:id="@+id/inputUsername"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dip"
-        android:layout_marginBottom="15dip"
-        android:maxLines="1"/>
+        <EditText
+            android:id="@+id/inputUsername"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Username"
+            android:inputType="textCapWords" />
+    </android.support.design.widget.TextInputLayout>
 
-    <!-- Email Id Label -->
-    <TextView android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="Email Id"
-        android:paddingLeft="10dip"
-        android:paddingRight="10dip"
-        android:paddingTop="10dip"
-        android:textSize="17dip"/>
 
-    <!-- Input Email Id -->
-    <EditText android:id="@+id/inputEmailId"
-        android:layout_width="fill_parent"
+    <!-- Email Label -->
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dip"
-        android:layout_marginBottom="15dip"
-        android:maxLines="1"/>
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp">
+
+        <EditText
+            android:id="@+id/inputEmailId"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Email Id"
+            android:inputType="textEmailAddress" />
+    </android.support.design.widget.TextInputLayout>
 
     <!-- Contact No Label -->
-    <TextView android:layout_width="fill_parent"
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Contact No"
-        android:paddingLeft="10dip"
-        android:paddingRight="10dip"
-        android:paddingTop="10dip"
-        android:textSize="17dip"/>
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp">
 
-    <!-- Input Contact No -->
-    <EditText android:id="@+id/inputContactNo"
-        android:layout_width="fill_parent"
+        <EditText
+            android:id="@+id/inputContactNo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Contact No"
+            android:inputType="number" />
+    </android.support.design.widget.TextInputLayout>
+
+    <!-- Profession label -->
+    <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+        android:id="@+id/edit_professionspinner"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dip"
-        android:layout_marginBottom="15dip"
-        android:lines="4"
-        android:gravity="top"/>
+        android:hint="Profession"
+        android:textColorHint="#05ab9a"
+        app:met_floatingLabel="normal" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="20dp">
+        <TextView
+            android:id="@+id/edit_gender_textview"
+            android:paddingRight="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Gender"
+            android:textSize="20dp" />
+        <RadioGroup
+            android:id="@+id/edit_gender_radio_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/edit_gender_textview"
+            android:orientation="horizontal"
+            >
+            <RadioButton
+                android:id="@+id/edit_male_radio_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Male"
+                />
+            <RadioButton
+                android:id="@+id/edit_female_radio_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text = "Female"
+                />
+            <RadioButton
+                android:id="@+id/edit_unspecified_radio_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text = "Unspecified"
+                />
+        </RadioGroup>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true">
+
+            <EditText
+                android:id="@+id/edit_dob_datetime_text"
+                android:layout_width="158dp"
+                android:layout_height="wrap_content"
+                android:hint="Date of birth"
+                android:inputType="datetime" />
+
+            <Button
+                android:id="@+id/edit_btn_dob_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/edit_dob_datetime_text"
+                android:text="Date" />
+
+            <Button
+                android:id="@+id/edit_btn_dob_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/edit_btn_dob_date"
+                android:text="Time" />
+
+        </android.support.design.widget.TextInputLayout>
+    </RelativeLayout>
 
     <LinearLayout android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -82,3 +164,4 @@
     </LinearLayout>
 
 </LinearLayout>
+</ScrollView>

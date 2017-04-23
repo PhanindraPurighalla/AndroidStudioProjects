@@ -38,6 +38,15 @@ public class SessionManager {
     // Contact no (make variable public to access from outside)
     public static final String KEY_CONTACT_NO = "contact_no";
 
+    // Contact no (make variable public to access from outside)
+    public static final String KEY_PROFESSION = "profession";
+
+    // Contact no (make variable public to access from outside)
+    public static final String KEY_GENDER = "gender";
+
+    // Contact no (make variable public to access from outside)
+    public static final String KEY_DATE_OF_BIRTH = "date_of_birth";
+
     // Constructor
     public SessionManager(Context context){
         this._context = context;
@@ -73,6 +82,27 @@ public class SessionManager {
             e.printStackTrace();
         }
 
+        // Storing profession in pref
+        try {
+            editor.putString(KEY_PROFESSION, userObject.getString("profession"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        // Storing gender in pref
+        try {
+            editor.putString(KEY_GENDER, userObject.getString("gender"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        // Storing date of birth in pref
+        try {
+            editor.putString(KEY_DATE_OF_BIRTH, userObject.getString("date_of_birth"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         // commit changes
         editor.commit();
     }
@@ -100,7 +130,6 @@ public class SessionManager {
     }
 
 
-
     /**
      * Get stored session data
      * */
@@ -114,6 +143,15 @@ public class SessionManager {
 
         // user contact no
         user.put(KEY_CONTACT_NO, pref.getString(KEY_CONTACT_NO, null));
+
+        // user profession
+        user.put(KEY_PROFESSION, pref.getString(KEY_PROFESSION, null));
+
+        // user gender
+        user.put(KEY_GENDER, pref.getString(KEY_GENDER, null));
+
+        // user date of birth
+        user.put(KEY_DATE_OF_BIRTH, pref.getString(KEY_DATE_OF_BIRTH, null));
 
         // return user
         return user;
