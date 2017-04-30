@@ -12,6 +12,7 @@ public class MainFunctionsActivity extends Activity {
     Button btnViewTypes;
     Button btnNewType;
     Button btnManageUserProfile;
+    Button btnViewUsersReport;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -22,6 +23,7 @@ public class MainFunctionsActivity extends Activity {
         btnViewTypes = (Button) findViewById(R.id.btnViewTypes);
         btnNewType = (Button) findViewById(R.id.btnCreateType);
         btnManageUserProfile = (Button) findViewById(R.id.btnManageUserProfile);
+        btnViewUsersReport = (Button) findViewById(R.id.btnViewUsersReport);
 
         // view transaction types click event
         btnViewTypes.setOnClickListener(new View.OnClickListener() {
@@ -52,6 +54,17 @@ public class MainFunctionsActivity extends Activity {
             public void onClick(View view) {
                 // Launching manage user profile activity
                 Intent i = new Intent(getApplicationContext(), ManageUserProfileActivity.class);
+                startActivity(i);
+            }
+        });
+
+        // view users report click event
+        btnViewUsersReport.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                // Launching users report activity
+                Intent i = new Intent(getApplicationContext(), UsersReportActivity.class);
                 startActivity(i);
             }
         });

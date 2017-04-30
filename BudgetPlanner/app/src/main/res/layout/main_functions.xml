@@ -38,4 +38,11 @@
         android:text="Manage User Profile"
         android:layout_marginTop="25dip"/>
 
+    <!--  Button to view users report -->
+    <Button android:id="@+id/btnViewUsersReport"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="View Users Report"
+        android:layout_marginTop="25dip"/>
+
 </LinearLayout>

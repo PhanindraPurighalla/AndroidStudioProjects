@@ -61,6 +61,12 @@
             android:label="Edit User"
             android:theme="@style/AppTheme.Dark" />
 
+        <!-- Edit User profile Activity -->
+        <activity
+            android:name=".UsersReportActivity"
+            android:label="Users Report"
+            android:theme="@style/AppTheme.Dark" />
+
     </application>
 
 </manifest>
