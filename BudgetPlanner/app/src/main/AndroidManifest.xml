@@ -51,8 +51,8 @@
 
         <!-- Add Financial Record Activity -->
         <activity
-            android:name=".AddFinancialTransactionActivity"
-            android:label="Add Financial Record"
+            android:name=".AddExpenseActivity"
+            android:label="Add Expense Record"
             android:theme="@style/AppTheme.Dark" />
 
         <!-- Edit User profile Activity -->
@@ -61,7 +61,7 @@
             android:label="Edit User"
             android:theme="@style/AppTheme.Dark" />
 
-        <!-- Edit User profile Activity -->
+        <!-- Users report Activity -->
         <activity
             android:name=".UsersReportActivity"
             android:label="Users Report"

@@ -41,7 +41,7 @@ public class BudgetPlannerActivity extends AppCompatActivity {
     private String message = "";
 
     // url to login to the BudgetPlanner application
-    private static String url_login = "http://10.0.2.2/BudgetPlanner/users/rest_login.json";
+    private static String url_login = "http://budgetplanner.bxsv2nypnp.us-west-2.elasticbeanstalk.com/users/rest_login.json";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

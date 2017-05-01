@@ -62,7 +62,7 @@ public class SignupActivity extends AppCompatActivity implements TimePickerDialo
     private String message = "";
 
     // url to signup to the BudgetPlanner application
-    private static String url_signup = "http://10.0.2.2/BudgetPlanner/users/add.json";
+    private static String url_signup = "http://budgetplanner.bxsv2nypnp.us-west-2.elasticbeanstalk.com/users/add.json";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

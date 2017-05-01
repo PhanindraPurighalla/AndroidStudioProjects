@@ -14,11 +14,12 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
@@ -29,6 +30,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -38,6 +40,12 @@ import butterknife.InjectView;
 
 public class AddExpenseActivity extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener,
         DatePickerDialog.OnDateSetListener {
+
+    // Progress Dialog
+    private ProgressDialog pDialog;
+
+    ArrayList<String> categoriesList=new ArrayList<String>();
+
     private String gender = "Male";
     private String datePart = "01-Jan-1970";
     private String timePart = "00:00:00";
@@ -57,10 +65,12 @@ public class AddExpenseActivity extends AppCompatActivity implements TimePickerD
     private String message = "";
 
     // url to add expense record to the BudgetPlanner application
-    private static String url_add_expense = "http://10.0.2.2/BudgetPlanner/expenses/add.json";
+    private static String url_add_expense = "http://budgetplanner.bxsv2nypnp.us-west-2.elasticbeanstalk.com/expenses/add.json";
 
     // url to get configured categories
-    private static String url_get_categories = "http://10.0.2.2/BudgetPlanner/categories.json";
+    private static String url_get_categories = "http://budgetplanner.bxsv2nypnp.us-west-2.elasticbeanstalk.com/categories.json";
+
+    MaterialBetterSpinner materialDesignSpinner;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -68,11 +78,7 @@ public class AddExpenseActivity extends AppCompatActivity implements TimePickerD
         setContentView(R.layout.add_expense);
         ButterKnife.inject(this);
 
-        ArrayList<String> categories = getCategories();
-
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_dropdown_item_1line, categories);
-        final MaterialBetterSpinner materialDesignSpinner = (MaterialBetterSpinner)
+        materialDesignSpinner = (MaterialBetterSpinner)
                 findViewById(R.id.categoryspinner);
         materialDesignSpinner.addTextChangedListener(new TextWatcher() {
             @Override
@@ -92,7 +98,9 @@ public class AddExpenseActivity extends AppCompatActivity implements TimePickerD
 
             }
         } );
-        materialDesignSpinner.setAdapter(arrayAdapter);
+
+
+        new LoadAllCategories().execute();
 
         textView = (TextView) findViewById(R.id.expense_datetime_text);
         btnPickDate = findViewById(R.id.btn_expense_date);
@@ -147,99 +155,40 @@ public class AddExpenseActivity extends AppCompatActivity implements TimePickerD
                 if (!validate()) {
                     return;
                 }
-                new AddExpenseRecord().execute();
+                //new AddExpenseRecord().execute();
             }
         });
 
     }
 
-    private ArrayList<String> getCategories(){
-        JSONObject jsonObject=null;
-        ArrayList<String> categoriesList=new ArrayList<String>();
-        try {
-            String professions = "{\n" +
-                    "  \"professions\": [\n" +
-                    "    {\n" +
-                    "      \"Profession\": {\n" +
-                    "        \"id\": \"1\",\n" +
-                    "        \"desc\": \"student\"\n" +
-                    "      }\n" +
-                    "    },\n" +
-                    "    {\n" +
-                    "      \"Profession\": {\n" +
-                    "        \"id\": \"2\",\n" +
-                    "        \"desc\": \"home maker\"\n" +
-                    "      }\n" +
-                    "    },\n" +
-                    "    {\n" +
-                    "      \"Profession\": {\n" +
-                    "        \"id\": \"3\",\n" +
-                    "        \"desc\": \"software professional\"\n" +
-                    "      }\n" +
-                    "    },\n" +
-                    "    {\n" +
-                    "      \"Profession\": {\n" +
-                    "        \"id\": \"4\",\n" +
-                    "        \"desc\": \"doctor\"\n" +
-                    "      }\n" +
-                    "    },\n" +
-                    "    {\n" +
-                    "      \"Profession\": {\n" +
-                    "        \"id\": \"5\",\n" +
-                    "        \"desc\": \"teacher\"\n" +
-                    "      }\n" +
-                    "    }\n" +
-                    "  ]\n" +
-                    "}";
-            jsonObject=new JSONObject(professions);
-            JSONArray jsonArray = jsonObject.getJSONArray("professions");
-            if (jsonArray != null) {
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    professionList.add(jsonArray.getJSONObject(i).getJSONObject("Profession").getString("desc"));
-                }
-            }
-        } catch (JSONException je){
-            je.printStackTrace();
-        }
-        return professionList;
-    }
-
-    @Override
-    public void onBackPressed() {
-        // disable going back to the MainActivity
-        moveTaskToBack(true);
-    }
-
     public boolean validate() {
         boolean valid = true;
 
-        String name = _nameText.getText().toString();
-        String email = _emailText.getText().toString();
-        String password = _passwordText.getText().toString();
+        String expense_desc = _expenseDescText.getText().toString();
+        String expense_amount = _expenseAmountText.getText().toString();
 
-        if (name.isEmpty() || name.length() < 3) {
-            _nameText.setError("at least 3 characters");
+        if (expense_desc.isEmpty() || expense_desc.length() < 10) {
+            _expenseDescText.setError("at least 10 characters");
             valid = false;
         } else {
-            _nameText.setError(null);
+            _expenseDescText.setError(null);
         }
 
-        if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            _emailText.setError("enter a valid email address");
+        if (expense_amount.isEmpty()) {
+            _expenseAmountText.setError("expense amount cannot be null");
             valid = false;
         } else {
-            _emailText.setError(null);
+            try {
+                double expenseAmount = Double.valueOf(_expenseAmountText.getText().toString());
+                _expenseAmountText.setError(null);
+            }
+            catch (NumberFormatException nfe) {
+                valid = false;
+            }
         }
-
-        if (password.isEmpty() || password.length() < 4 || password.length() > 10) {
-            _passwordText.setError("between 4 and 10 alphanumeric characters");
-            valid = false;
-        } else {
-            _passwordText.setError(null);
-        }
-
         return valid;
     }
+
 
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
@@ -257,18 +206,9 @@ public class AddExpenseActivity extends AppCompatActivity implements TimePickerD
     }
 
     /**
-     * Background Async Task to Signup a new user to the BudgetPlanner application by making HTTP Request
+     * Background Async Task to Load all categories by making HTTP Request
      * */
-    class AppSignup extends AsyncTask<String, String, String> {
-
-        String name = _nameText.getText().toString();
-        String email = _emailText.getText().toString();
-        String password = _passwordText.getText().toString();
-        String profession = _professionSpinner.getText().toString();
-        String dob = _dateOfBirth.getText().toString();
-
-        final ProgressDialog progressDialog = new ProgressDialog(AddExpenseActivity.this,
-                R.style.AppTheme_Dark);
+    class LoadAllCategories extends AsyncTask<String, String, String> {
 
         /**
          * Before starting background thread Show Progress Dialog
@@ -276,15 +216,97 @@ public class AddExpenseActivity extends AppCompatActivity implements TimePickerD
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            pDialog = new ProgressDialog(AddExpenseActivity.this);
+            pDialog.setMessage("Filling categories drop-down list. Please wait...");
+            pDialog.setIndeterminate(false);
+            pDialog.setCancelable(false);
+            pDialog.show();
+        }
+
+        /**
+         * getting All users from url
+         * */
+        protected String doInBackground(String... args) {
+
+            OkHttpClient client = new OkHttpClient();
+
+            Request request = new Request.Builder()
+                    .url(url_get_categories)
+                    .get()
+                    .addHeader("accept", "application/json")
+                    .addHeader("content-type", "application/json")
+                    .addHeader("cache-control", "no-cache")
+                    .addHeader("postman-token", "8f37de53-1db3-e010-35ad-8a89d685ad6f")
+                    .build();
+
+            try {
+                Response response = client.newCall(request).execute();
+                JSONObject jsonResponse = new JSONObject(response.body().string());
+                JSONArray categories = jsonResponse.getJSONArray("categories");
+                for (int i=0; i<categories.length(); i++) {
+                    JSONObject category = categories.getJSONObject(i);
+                    String category_code = category.getJSONObject("Category").getString("category_code");
+                    categoriesList.add(category_code);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        /**
+         * After completing background task Dismiss the progress dialog
+         * **/
+        protected void onPostExecute(String file_url) {
+            // dismiss the dialog after getting all users
+            pDialog.dismiss();
+
+            // updating UI from Background Thread
+            runOnUiThread(new Runnable() {
+                public void run() {
+                    ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(AddExpenseActivity.this,
+                            android.R.layout.simple_dropdown_item_1line, categoriesList);
+
+                    materialDesignSpinner.setAdapter(arrayAdapter);
+
+                }
+            });
+        }
+
+    }
+
+    /**
+     * Background Async Task to create a new expense record by making HTTP Request
+     *
+
+    class AddExpenseRecord extends AsyncTask<String, String, String> {
+
+        String expense_desc = _expenseDescText.getText().toString();
+        String expense_amount = _expenseAmountText.getText().toString();
+        String category = _categorySpinner.getText().toString();
+        String expense_date = _dateOfExpense.getText().toString();
+
+        final ProgressDialog progressDialog = new ProgressDialog(AddExpenseActivity.this,
+                R.style.AppTheme_Dark);
+
+        /**
+         * Before starting background thread Show Progress Dialog
+         *
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
             progressDialog.setIndeterminate(true);
-            progressDialog.setMessage("Creating a new user account. Please wait...");
+            progressDialog.setMessage("Creating a new expense record. Please wait...");
             progressDialog.show();
 
         }
 
         /**
          * Signup new user via url
-         * */
+         *
         protected String doInBackground(String... args) {
             // Building Parameters
             List<NameValuePair> params = new ArrayList<NameValuePair>();
@@ -296,7 +318,7 @@ public class AddExpenseActivity extends AppCompatActivity implements TimePickerD
             params.add(new BasicNameValuePair("date_of_birth", dob));
 
             // getting JSON string from URL
-            JSONObject json = jParser.makeHttpRequest(url_signup, "POST", params);
+            JSONObject json = jParser.makeHttpRequest(url_add_expense, "POST", params);
 
             // check log cat for response
             Log.d("Signup Response", json.toString());
@@ -323,7 +345,7 @@ public class AddExpenseActivity extends AppCompatActivity implements TimePickerD
 
         /**
          * After completing background task Dismiss the progress dialog
-         * **/
+         * *
         protected void onPostExecute(String file_url) {
 
             // dismiss the dialog after successful login
@@ -342,5 +364,5 @@ public class AddExpenseActivity extends AppCompatActivity implements TimePickerD
 
         }
 
-    }
+    } */
 }

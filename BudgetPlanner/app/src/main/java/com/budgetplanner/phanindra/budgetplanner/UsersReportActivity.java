@@ -37,7 +37,7 @@ public class UsersReportActivity extends AppCompatActivity {
     JSONParser jParser = new JSONParser();
 
     // url to get all users list
-    private static String url_all_users = "http://10.0.2.2/BudgetPlanner/users.json";
+    private static String url_all_users = "http://budgetplanner.bxsv2nypnp.us-west-2.elasticbeanstalk.com/users.json";
 
     BarChart chart ;
     ArrayList<BarEntry> BARENTRY ;

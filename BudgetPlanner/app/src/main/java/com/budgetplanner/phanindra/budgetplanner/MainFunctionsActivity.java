@@ -42,7 +42,7 @@ public class MainFunctionsActivity extends Activity {
             @Override
             public void onClick(View view) {
                 // Launching create new transaction type activity
-                Intent i = new Intent(getApplicationContext(), NewTypeActivity.class);
+                Intent i = new Intent(getApplicationContext(), AddExpenseActivity.class);
                 startActivity(i);
             }
         });
