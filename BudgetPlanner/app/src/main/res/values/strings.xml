@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">BudgetPlanner</string>
+    <string name="app_name">Budget Planner</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_login">Sign in</string>
 

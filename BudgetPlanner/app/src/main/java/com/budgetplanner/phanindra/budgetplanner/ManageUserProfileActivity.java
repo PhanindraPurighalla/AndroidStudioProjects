@@ -88,13 +88,6 @@ public class ManageUserProfileActivity extends AppCompatActivity implements Time
     // url to unsubscribe user
     private static final String url_delete_user = "http://budgetplanner.bxsv2nypnp.us-west-2.elasticbeanstalk.com/users/delete";
 
-    // JSON Node names
-    private static final String TAG_USER_OBJ = "loggedInUser";
-    private static final String TAG_USER = "User";
-    private static final String TAG_USER_NAME = "username";
-    private static final String TAG_EMAIL_ID = "email_id";
-    private static final String TAG_CONTACT_NO = "contact_no";
-
     // Session Manager Class
     SessionManager session;
 
@@ -151,7 +144,7 @@ public class ManageUserProfileActivity extends AppCompatActivity implements Time
 
         /**
          * Call this function whenever you want to check user login
-         * This will redirect user to LoginActivity is he is not
+         * This will redirect user to LoginActivity if he is not
          * logged in
          * */
         session.checkLogin();

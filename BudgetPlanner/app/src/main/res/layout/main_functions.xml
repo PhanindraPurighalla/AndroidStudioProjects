@@ -7,42 +7,25 @@
 
     <!--  Overview screen with required functions -->
 
-    <!--  Button to view all transaction types -->
-    <Button android:id="@+id/btnViewTypes"
+    <!--  Button to create a new expense record -->
+    <Button android:id="@+id/btnCreateExpenseRecord"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="View Transaction Types"
-        android:layout_marginTop="25dip"/>
-
-    <!--  Button to create a new transaction type -->
-    <Button android:id="@+id/btnCreateType"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="Add New Transaction Type"
-        android:layout_marginTop="25dip"/>
-
-    <!--  Button to create a new financial transaction -->
-    <android.support.v7.widget.AppCompatButton
-        android:id="@+id/btn_add_transaction"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:layout_marginBottom="24dp"
-        android:padding="12dp"
-        android:text="Add Financial Transaction"/>
-
-    <!--  Button to manage user profile -->
-    <Button android:id="@+id/btnManageUserProfile"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="Manage User Profile"
+        android:text="Add expense record"
         android:layout_marginTop="25dip"/>
 
     <!--  Button to view users report -->
     <Button android:id="@+id/btnViewUsersReport"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="View Users Report"
+        android:text="View Expense Report"
+        android:layout_marginTop="25dip"/>
+
+    <!--  Button to manage user profile -->
+    <Button android:id="@+id/btnManageUserProfile"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Manage User Profile"
         android:layout_marginTop="25dip"/>
 
 </LinearLayout>

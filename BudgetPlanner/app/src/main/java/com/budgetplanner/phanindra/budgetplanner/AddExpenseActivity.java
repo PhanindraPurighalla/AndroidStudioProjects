@@ -17,8 +17,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
+import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
@@ -33,6 +35,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -41,13 +44,18 @@ import butterknife.InjectView;
 public class AddExpenseActivity extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener,
         DatePickerDialog.OnDateSetListener {
 
+    // Session Manager Class
+    SessionManager session;
+
     // Progress Dialog
     private ProgressDialog pDialog;
 
     ArrayList<String> categoriesList=new ArrayList<String>();
+    HashMap<String, String> categoriesHash = new HashMap<String, String>();
 
-    private String gender = "Male";
-    private String datePart = "01-Jan-1970";
+    private int userId;
+    private double expenseAmount;
+    private String datePart = "1970-01-01";
     private String timePart = "00:00:00";
 
     private View btnPickDate;
@@ -60,8 +68,6 @@ public class AddExpenseActivity extends AppCompatActivity implements TimePickerD
     @InjectView(R.id.expense_datetime_text) EditText _dateOfExpense;
     @InjectView(R.id.btn_add_expense) Button _addExpenseButton;
 
-    // Creating JSON Parser object
-    JSONParser jParser = new JSONParser();
     private String message = "";
 
     // url to add expense record to the BudgetPlanner application
@@ -77,6 +83,21 @@ public class AddExpenseActivity extends AppCompatActivity implements TimePickerD
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_expense);
         ButterKnife.inject(this);
+
+        // Session class instance
+        session = new SessionManager(getApplicationContext());
+        /**
+         * Call this function whenever you want to check user login
+         * This will redirect user to LoginActivity if he is not
+         * logged in
+         * */
+        session.checkLogin();
+
+        // get user data from session
+        HashMap<String, String> user = session.getUserDetails();
+
+        // userid
+        userId = Integer.valueOf(user.get(SessionManager.KEY_USERID));
 
         materialDesignSpinner = (MaterialBetterSpinner)
                 findViewById(R.id.categoryspinner);
@@ -136,6 +157,7 @@ public class AddExpenseActivity extends AppCompatActivity implements TimePickerD
                 timepickerdialog.vibrate(true); //vibrate on choosing time?
                 timepickerdialog.dismissOnPause(false); //dismiss the dialog onPause() called?
                 timepickerdialog.enableSeconds(true); //show seconds?
+                timepickerdialog.setAccentColor(Color.parseColor("#9C27A0")); // custom accent color
 
                 //Handling cancel event
                 timepickerdialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
@@ -155,7 +177,7 @@ public class AddExpenseActivity extends AppCompatActivity implements TimePickerD
                 if (!validate()) {
                     return;
                 }
-                //new AddExpenseRecord().execute();
+                new AddExpenseRecord().execute();
             }
         });
 
@@ -179,7 +201,7 @@ public class AddExpenseActivity extends AppCompatActivity implements TimePickerD
             valid = false;
         } else {
             try {
-                double expenseAmount = Double.valueOf(_expenseAmountText.getText().toString());
+                expenseAmount = Double.valueOf(_expenseAmountText.getText().toString());
                 _expenseAmountText.setError(null);
             }
             catch (NumberFormatException nfe) {
@@ -192,7 +214,10 @@ public class AddExpenseActivity extends AppCompatActivity implements TimePickerD
 
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
-        datePart = dayOfMonth + "-" + (++monthOfYear) + "-" + year;
+        String dayPart = dayOfMonth < 10 ? "0" + dayOfMonth : "" + dayOfMonth;
+        int updatedMonth = ++monthOfYear;
+        String monthPart = updatedMonth < 10 ? "0" + updatedMonth : "" + updatedMonth;
+        datePart = year + "-" + (monthPart) + "-" + dayPart;
         textView.setText(datePart + " " + timePart);
     }
 
@@ -245,8 +270,10 @@ public class AddExpenseActivity extends AppCompatActivity implements TimePickerD
                 JSONArray categories = jsonResponse.getJSONArray("categories");
                 for (int i=0; i<categories.length(); i++) {
                     JSONObject category = categories.getJSONObject(i);
+                    String category_id = category.getJSONObject("Category").getString("id");
                     String category_code = category.getJSONObject("Category").getString("category_code");
                     categoriesList.add(category_code);
+                    categoriesHash.put(category_code, category_id);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -281,12 +308,12 @@ public class AddExpenseActivity extends AppCompatActivity implements TimePickerD
     /**
      * Background Async Task to create a new expense record by making HTTP Request
      *
+     **/
 
     class AddExpenseRecord extends AsyncTask<String, String, String> {
 
         String expense_desc = _expenseDescText.getText().toString();
-        String expense_amount = _expenseAmountText.getText().toString();
-        String category = _categorySpinner.getText().toString();
+        String category_id = categoriesHash.get(_categorySpinner.getText().toString());
         String expense_date = _dateOfExpense.getText().toString();
 
         final ProgressDialog progressDialog = new ProgressDialog(AddExpenseActivity.this,
@@ -294,7 +321,7 @@ public class AddExpenseActivity extends AppCompatActivity implements TimePickerD
 
         /**
          * Before starting background thread Show Progress Dialog
-         *
+         **/
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -305,37 +332,36 @@ public class AddExpenseActivity extends AppCompatActivity implements TimePickerD
         }
 
         /**
-         * Signup new user via url
-         *
+         * Add expense record via url
+         **/
         protected String doInBackground(String... args) {
-            // Building Parameters
-            List<NameValuePair> params = new ArrayList<NameValuePair>();
-            params.add(new BasicNameValuePair("username", name));
-            params.add(new BasicNameValuePair("email_id", email));
-            params.add(new BasicNameValuePair("password", password));
-            params.add(new BasicNameValuePair("profession", profession));
-            params.add(new BasicNameValuePair("gender", gender));
-            params.add(new BasicNameValuePair("date_of_birth", dob));
+            OkHttpClient client = new OkHttpClient();
 
-            // getting JSON string from URL
-            JSONObject json = jParser.makeHttpRequest(url_add_expense, "POST", params);
-
-            // check log cat for response
-            Log.d("Signup Response", json.toString());
+            MediaType mediaType = MediaType.parse("application/json");
+            RequestBody body = RequestBody.create(mediaType, "{\r\n\t\"user_id\": \"" + userId + "\"," +
+                    "\r\n    \"expense_date\": \"" + expense_date + "\"," +
+                    "\r\n    \"category_id\": \"" + category_id + "\"," +
+                    "\r\n    \"expense_amount\": \"" + expenseAmount + "\"," +
+                    "\r\n    \"expense_desc\": \"" + expense_desc + "\"" +
+                    "\r\n}");
+            Request request = new Request.Builder()
+                    .url(url_add_expense)
+                    .post(body)
+                    .addHeader("accept", "application/json")
+                    .addHeader("content-type", "application/json")
+                    .addHeader("cache-control", "no-cache")
+                    .addHeader("postman-token", "3ffa193b-9b33-f622-59db-ba8b220c9a26")
+                    .build();
 
             try {
-                if (json.getJSONArray("response").getJSONObject(0).getString("result").equals("false")) {
-                    message = json.getJSONArray("response").getJSONObject(0).getString("message");
-                }
-                else {
-                    // successfully signed up
-                    message = json.getJSONArray("response").getJSONObject(0).getString("message");
-                    Intent i = new Intent(getApplicationContext(), BudgetPlannerActivity.class);
-                    startActivity(i);
-
-                    // closing this screen
+                Response response = client.newCall(request).execute();
+                JSONObject jsonResponse = new JSONObject(response.body().string());
+                message = jsonResponse.getJSONArray("response").getJSONObject(0).getString("message");
+                if (jsonResponse.getJSONArray("response").getJSONObject(0).getString("result").equals("true")) {
                     finish();
                 }
+            } catch (IOException e) {
+                e.printStackTrace();
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -345,10 +371,9 @@ public class AddExpenseActivity extends AppCompatActivity implements TimePickerD
 
         /**
          * After completing background task Dismiss the progress dialog
-         * *
+         * */
         protected void onPostExecute(String file_url) {
-
-            // dismiss the dialog after successful login
+            // dismiss the dialog after processing expense record
             progressDialog.dismiss();
 
             // updating UI from Background Thread
@@ -363,6 +388,5 @@ public class AddExpenseActivity extends AppCompatActivity implements TimePickerD
             });
 
         }
-
-    } */
+    }
 }

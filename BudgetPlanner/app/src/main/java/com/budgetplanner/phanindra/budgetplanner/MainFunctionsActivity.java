@@ -8,9 +8,7 @@ import android.widget.Button;
 
 public class MainFunctionsActivity extends Activity {
 
-
-    Button btnViewTypes;
-    Button btnNewType;
+    Button btnNewExpenseRecord;
     Button btnManageUserProfile;
     Button btnViewUsersReport;
 
@@ -20,28 +18,16 @@ public class MainFunctionsActivity extends Activity {
         setContentView(R.layout.main_functions);
 
         // Buttons
-        btnViewTypes = (Button) findViewById(R.id.btnViewTypes);
-        btnNewType = (Button) findViewById(R.id.btnCreateType);
+        btnNewExpenseRecord = (Button) findViewById(R.id.btnCreateExpenseRecord);
         btnManageUserProfile = (Button) findViewById(R.id.btnManageUserProfile);
         btnViewUsersReport = (Button) findViewById(R.id.btnViewUsersReport);
 
-        // view transaction types click event
-        btnViewTypes.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-                // Launching All transaction types Activity
-                Intent i = new Intent(getApplicationContext(), AllTypesActivity.class);
-                startActivity(i);
-            }
-        });
-
         // add transaction type click event
-        btnNewType.setOnClickListener(new View.OnClickListener() {
+        btnNewExpenseRecord.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
-                // Launching create new transaction type activity
+                // Launching create new expense record activity
                 Intent i = new Intent(getApplicationContext(), AddExpenseActivity.class);
                 startActivity(i);
             }

@@ -29,6 +29,9 @@ public class SessionManager {
     // All Shared Preferences Keys
     private static final String IS_LOGIN = "IsLoggedIn";
 
+    // User ID (make variable public to access from outside)
+    public static final String KEY_USERID = "id";
+
     // User name (make variable public to access from outside)
     public static final String KEY_NAME = "username";
 
@@ -60,6 +63,13 @@ public class SessionManager {
     public void createLoginSession(JSONObject userObject){
         // Storing login value as TRUE
         editor.putBoolean(IS_LOGIN, true);
+
+        // Storing userid in pref
+        try {
+            editor.putString(KEY_USERID, userObject.getString("id"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         // Storing name in pref
         try {
@@ -135,6 +145,10 @@ public class SessionManager {
      * */
     public HashMap<String, String> getUserDetails(){
         HashMap<String, String> user = new HashMap<String, String>();
+
+        // user id
+        user.put(KEY_USERID, pref.getString(KEY_USERID, null));
+
         // user name
         user.put(KEY_NAME, pref.getString(KEY_NAME, null));
 
