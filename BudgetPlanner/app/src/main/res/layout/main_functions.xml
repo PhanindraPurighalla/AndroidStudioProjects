@@ -14,8 +14,8 @@
         android:text="Add expense record"
         android:layout_marginTop="25dip"/>
 
-    <!--  Button to view users report -->
-    <Button android:id="@+id/btnViewUsersReport"
+    <!--  Button to view expense report -->
+    <Button android:id="@+id/btnViewExpenseReport"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="View Expense Report"

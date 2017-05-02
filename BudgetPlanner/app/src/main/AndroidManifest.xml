@@ -63,7 +63,7 @@
 
         <!-- Users report Activity -->
         <activity
-            android:name=".UsersReportActivity"
+            android:name=".ExpenseReportActivity"
             android:label="Users Report"
             android:theme="@style/AppTheme.Dark" />
 

@@ -8,7 +8,7 @@
     android:paddingTop="@dimen/activity_vertical_margin">
 
     <com.github.mikephil.charting.charts.BarChart
-        android:id="@+id/chart1"
+        android:id="@+id/expenseByUserChart"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" />
 

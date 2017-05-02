@@ -10,7 +10,7 @@ public class MainFunctionsActivity extends Activity {
 
     Button btnNewExpenseRecord;
     Button btnManageUserProfile;
-    Button btnViewUsersReport;
+    Button btnViewExpenseReport;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -20,7 +20,7 @@ public class MainFunctionsActivity extends Activity {
         // Buttons
         btnNewExpenseRecord = (Button) findViewById(R.id.btnCreateExpenseRecord);
         btnManageUserProfile = (Button) findViewById(R.id.btnManageUserProfile);
-        btnViewUsersReport = (Button) findViewById(R.id.btnViewUsersReport);
+        btnViewExpenseReport = (Button) findViewById(R.id.btnViewExpenseReport);
 
         // add transaction type click event
         btnNewExpenseRecord.setOnClickListener(new View.OnClickListener() {
@@ -45,12 +45,12 @@ public class MainFunctionsActivity extends Activity {
         });
 
         // view users report click event
-        btnViewUsersReport.setOnClickListener(new View.OnClickListener() {
+        btnViewExpenseReport.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
                 // Launching users report activity
-                Intent i = new Intent(getApplicationContext(), UsersReportActivity.class);
+                Intent i = new Intent(getApplicationContext(), ExpenseReportActivity.class);
                 startActivity(i);
             }
         });
