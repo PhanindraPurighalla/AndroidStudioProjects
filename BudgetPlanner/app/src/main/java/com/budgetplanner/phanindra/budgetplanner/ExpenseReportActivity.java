@@ -2,6 +2,7 @@ package com.budgetplanner.phanindra.budgetplanner;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
@@ -23,11 +24,16 @@ import org.json.JSONObject;
 
 public class ExpenseReportActivity extends AppCompatActivity {
 
+    // Session Manager Class
+    SessionManager session;
+
+    private String username;
+
     // Progress Dialog
     private ProgressDialog pDialog;
 
-    // url to get all expenses list
-    private static String url_all_expenses = "http://budgetplanner.bxsv2nypnp.us-west-2.elasticbeanstalk.com/expenses.json";
+    // url to get user's expenses list
+    private static String url_user_expenses = "http://budgetplanner.bxsv2nypnp.us-west-2.elasticbeanstalk.com/expenses/get_user_expenses/";
 
     BarChart chart ;
     ArrayList<BarEntry> BARENTRY ;
@@ -39,6 +45,21 @@ public class ExpenseReportActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.expense_report);
         chart = (BarChart) findViewById(R.id.expenseByUserChart);
+
+        // Session class instance
+        session = new SessionManager(getApplicationContext());
+        /**
+         * Call this function whenever you want to check user login
+         * This will redirect user to LoginActivity if he is not
+         * logged in
+         * */
+        session.checkLogin();
+
+        // get user data from session
+        HashMap<String, String> user = session.getUserDetails();
+
+        // username
+        username = user.get(SessionManager.KEY_NAME);
 
         BARENTRY = new ArrayList<>();
 
@@ -74,7 +95,7 @@ public class ExpenseReportActivity extends AppCompatActivity {
             OkHttpClient client = new OkHttpClient();
 
             Request request = new Request.Builder()
-                    .url(url_all_expenses)
+                    .url(url_user_expenses + username + ".json")
                     .get()
                     .addHeader("accept", "application/json")
                     .addHeader("content-type", "application/json")
@@ -89,15 +110,16 @@ public class ExpenseReportActivity extends AppCompatActivity {
                 for (int i=0; i<expenses.length(); i++) {
                     JSONObject expense = expenses.getJSONObject(i);
                     String categoryCode = expense.getJSONObject("Category").getString("category_code");
+                    Integer expenseAmount = Integer.parseInt(expense.getJSONObject("Expense").getString("expense_amount"));
                     if (BarEntryLabels.contains(categoryCode)) {
                         int categoryCodeIndex = BarEntryLabels.indexOf(categoryCode);
-                        float currentCount = BARENTRY.get(categoryCodeIndex).getVal();
+                        float currentExpenseAmount = BARENTRY.get(categoryCodeIndex).getVal();
                         BARENTRY.remove(categoryCodeIndex);
-                        BARENTRY.add(new BarEntry(currentCount+1, categoryCodeIndex));
+                        BARENTRY.add(new BarEntry(currentExpenseAmount+expenseAmount, categoryCodeIndex));
                     }
                     else {
                         BarEntryLabels.add(categoryCode);
-                        BARENTRY.add(new BarEntry(1f, BarEntryLabels.indexOf(categoryCode)));
+                        BARENTRY.add(new BarEntry(expenseAmount, BarEntryLabels.indexOf(categoryCode)));
                     }
                 }
             } catch (IOException e) {
