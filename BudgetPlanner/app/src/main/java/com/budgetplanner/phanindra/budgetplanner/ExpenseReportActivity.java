@@ -106,11 +106,11 @@ public class ExpenseReportActivity extends AppCompatActivity {
             try {
                 Response response = client.newCall(request).execute();
                 JSONObject jsonResponse = new JSONObject(response.body().string());
-                JSONArray expenses = jsonResponse.getJSONArray("expenses");
+                JSONArray expenses = jsonResponse.getJSONArray("expense");
                 for (int i=0; i<expenses.length(); i++) {
                     JSONObject expense = expenses.getJSONObject(i);
                     String categoryCode = expense.getJSONObject("Category").getString("category_code");
-                    Integer expenseAmount = Integer.parseInt(expense.getJSONObject("Expense").getString("expense_amount"));
+                    Float expenseAmount = Float.parseFloat(expense.getJSONObject("Expense").getString("expense_amount"));
                     if (BarEntryLabels.contains(categoryCode)) {
                         int categoryCodeIndex = BarEntryLabels.indexOf(categoryCode);
                         float currentExpenseAmount = BARENTRY.get(categoryCodeIndex).getVal();
