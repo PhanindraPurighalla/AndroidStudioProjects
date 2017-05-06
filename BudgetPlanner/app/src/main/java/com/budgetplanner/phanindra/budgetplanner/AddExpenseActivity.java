@@ -71,10 +71,10 @@ public class AddExpenseActivity extends AppCompatActivity implements TimePickerD
     private String message = "";
 
     // url to add expense record to the BudgetPlanner application
-    private static String url_add_expense = "http://budgetplanner.bxsv2nypnp.us-west-2.elasticbeanstalk.com/expenses/add.json";
+    private static String url_add_expense = "http://Sample-env.bxsv2nypnp.us-west-2.elasticbeanstalk.com/expenses/add.json";
 
     // url to get configured categories
-    private static String url_get_categories = "http://budgetplanner.bxsv2nypnp.us-west-2.elasticbeanstalk.com/categories.json";
+    private static String url_get_categories = "http://Sample-env.bxsv2nypnp.us-west-2.elasticbeanstalk.com/categories.json";
 
     MaterialBetterSpinner materialDesignSpinner;
 

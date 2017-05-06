@@ -83,10 +83,10 @@ public class ManageUserProfileActivity extends AppCompatActivity implements Time
     JSONParser jsonParser = new JSONParser();
 
     // url to update user profile
-    private static final String url_update_user = "http://budgetplanner.bxsv2nypnp.us-west-2.elasticbeanstalk.com/users/edit";
+    private static final String url_update_user = "http://Sample-env.bxsv2nypnp.us-west-2.elasticbeanstalk.com/users/edit";
 
     // url to unsubscribe user
-    private static final String url_delete_user = "http://budgetplanner.bxsv2nypnp.us-west-2.elasticbeanstalk.com/users/delete";
+    private static final String url_delete_user = "http://Sample-env.bxsv2nypnp.us-west-2.elasticbeanstalk.com/users/delete";
 
     // Session Manager Class
     SessionManager session;

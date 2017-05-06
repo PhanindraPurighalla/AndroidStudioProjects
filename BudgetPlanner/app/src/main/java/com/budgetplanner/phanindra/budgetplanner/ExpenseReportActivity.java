@@ -33,7 +33,7 @@ public class ExpenseReportActivity extends AppCompatActivity {
     private ProgressDialog pDialog;
 
     // url to get user's expenses list
-    private static String url_user_expenses = "http://budgetplanner.bxsv2nypnp.us-west-2.elasticbeanstalk.com/expenses/get_user_expenses/";
+    private static String url_user_expenses = "http://Sample-env.bxsv2nypnp.us-west-2.elasticbeanstalk.com/expenses/get_user_expenses/";
 
     BarChart chart ;
     ArrayList<BarEntry> BARENTRY ;
