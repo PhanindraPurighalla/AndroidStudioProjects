@@ -9,6 +9,8 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
 
     <application
         android:allowBackup="true"
@@ -61,10 +63,16 @@
             android:label="Edit User"
             android:theme="@style/AppTheme.Dark" />
 
-        <!-- Users report Activity -->
+        <!-- Expense report Activity -->
         <activity
             android:name=".ExpenseReportActivity"
-            android:label="Users Report"
+            android:label="Expense Report"
+            android:theme="@style/AppTheme.Dark" />
+
+        <!-- SMS operations Activity -->
+        <activity
+            android:name=".SMSOperationsActivity"
+            android:label="SMS Operations"
             android:theme="@style/AppTheme.Dark" />
 
     </application>

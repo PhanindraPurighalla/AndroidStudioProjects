@@ -11,6 +11,7 @@ public class MainFunctionsActivity extends Activity {
     Button btnNewExpenseRecord;
     Button btnManageUserProfile;
     Button btnViewExpenseReport;
+    Button btnPerformSMSOperations;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -21,6 +22,7 @@ public class MainFunctionsActivity extends Activity {
         btnNewExpenseRecord = (Button) findViewById(R.id.btnCreateExpenseRecord);
         btnManageUserProfile = (Button) findViewById(R.id.btnManageUserProfile);
         btnViewExpenseReport = (Button) findViewById(R.id.btnViewExpenseReport);
+        btnPerformSMSOperations = (Button) findViewById(R.id.btnPerformSMSOperations);
 
         // add transaction type click event
         btnNewExpenseRecord.setOnClickListener(new View.OnClickListener() {
@@ -44,13 +46,24 @@ public class MainFunctionsActivity extends Activity {
             }
         });
 
-        // view users report click event
+        // view expense report click event
         btnViewExpenseReport.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
-                // Launching users report activity
+                // Launching expense report activity
                 Intent i = new Intent(getApplicationContext(), ExpenseReportActivity.class);
+                startActivity(i);
+            }
+        });
+
+        // perform SMS operations click event
+        btnPerformSMSOperations.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                // Launching perform SMS operations activity
+                Intent i = new Intent(getApplicationContext(), SMSOperationsActivity.class);
                 startActivity(i);
             }
         });

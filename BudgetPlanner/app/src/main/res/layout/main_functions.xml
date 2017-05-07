@@ -28,4 +28,11 @@
         android:text="Manage User Profile"
         android:layout_marginTop="25dip"/>
 
+    <!--  Button to perform SMS operations -->
+    <Button android:id="@+id/btnPerformSMSOperations"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Perform SMS Operations"
+        android:layout_marginTop="25dip"/>
+
 </LinearLayout>
